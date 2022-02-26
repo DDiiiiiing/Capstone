@@ -20,9 +20,9 @@ ROS환경(Ubuntu 18.04, ROS melodic)에서 진행됨. 노드 구성은 로봇팔
 ![node구조](https://user-images.githubusercontent.com/77828741/155833741-2c0a7c01-72da-4519-ad6b-cfd32dbffa9a.png)
 
 ## H/W
-Doosan Robotics Collaborative Robot
-자체 제작 End-Effector
-Robotis Turtlebot3 기반 Mobile Robot
+- Doosan Robotics Collaborative Robot
+- 자체 제작 End-Effector
+- Robotis Turtlebot3 기반 Mobile Robot
 
 # Reference
 ROS Melodic. (http://wiki.ros.org/melodic/Installation/Ubuntu)
