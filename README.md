@@ -22,7 +22,10 @@ ROS환경(Ubuntu 18.04, ROS melodic)에서 진행됨. 노드 구성은 로봇팔
 ## H/W
 - Doosan Robotics Collaborative Robot
 - 자체 제작 End-Effector
+- Intel Realsense
+- Camera(for yolo on end-effector)
 - Robotis Turtlebot3 기반 Mobile Robot
+- Camera 2ea(for cctv)
 
 # Reference
 ROS Melodic. (http://wiki.ros.org/melodic/Installation/Ubuntu)
