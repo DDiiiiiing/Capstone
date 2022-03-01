@@ -8,7 +8,7 @@ import rospy
 import os
 import threading, time
 import sys
-from sensor_msgs.msg import Joy    # Joy package import 
+from geometry_msgs.msg import Twist   
 sys.dont_write_bytecode = True
 sys.path.append( os.path.abspath(os.path.join(os.path.dirname(__file__),"../../../../common/imp")) ) # get import path : DSR_ROBOT.py 
 
@@ -16,8 +16,8 @@ sys.path.append( os.path.abspath(os.path.join(os.path.dirname(__file__),"../../.
 ROBOT_ID     = "dsr01"         # Robot Model & Robot ID identify namespace 
 ROBOT_MODEL  = "m1509"      
 import DR_init
-m_joyAnalogFlag = False
-m_xyCompareFlag = False
+# m_joyAnalogFlag = False
+# m_xyCompareFlag = False
 m_joyButtonFlag = False
 m_joyJogFlag = 0
 m_joyJogVel = 0.0
@@ -72,7 +72,7 @@ msgRobotState_cb.count = 0
 def thread_subscriber():
     rospy.Subscriber('/'+ROBOT_ID +ROBOT_MODEL+'/state', RobotState, msgRobotState_cb)
     rospy.spin()
-    #rospy.spinner(2)    
+    # rospy.spinner(2)    
 
 def thread_publish_jog(): # Publish multi-jog 
     while not rospy.is_shutdown():
@@ -101,7 +101,7 @@ def joy_cb(msg):  # Joystick Callback Func; This function can handle the key map
         m_joyButtonFlag = True
     else:
         m_joyButtonFlag = False
-    #rospy.loginfo(str(sum(msg.buttons)))
+    rospy.loginfo(str(sum(msg.buttons)))
     if sum(msg.buttons) > 0:
         if msg.buttons[4] == 1 and msg.buttons[5] == 1: # R1 and L1 buttons are pressed simultaneously
             FLAG_CONTROL = FLAG_READY
@@ -129,7 +129,7 @@ def joy_cb(msg):  # Joystick Callback Func; This function can handle the key map
 
 ############# Main Function
 if __name__ == "__main__":
-    rospy.init_node('ros_test_220216.py')
+    rospy.init_node('teleop_test')
     rospy.on_shutdown(shutdown)
 
     t1 = threading.Thread(target=thread_publish_jog)
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     t1.start()
 
     pub_stop = rospy.Publisher('/'+ROBOT_ID +ROBOT_MODEL+'/stop', RobotStop, queue_size=10)
-    sub_joy  = rospy.Subscriber("joy", Joy, joy_cb)
+    sub_joy  = rospy.Subscriber("teleop_twist_keyboard", Twist, queue_size=1)
     while not rospy.is_shutdown():
         if FLAG_CONTROL == FLAG_HOMMING:
             movej([0,0,0,0,0,0], 60, 30)
