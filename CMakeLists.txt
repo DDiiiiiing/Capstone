@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(capstone_teleop_key)
+project(capstone)
 
 
 
 find_package(catkin REQUIRED COMPONENTS
 # roscpp
   rospy
+  roslib
 #  message_generation
 # actionlib_msgs
   sensor_msgs
@@ -36,11 +37,11 @@ find_package(catkin REQUIRED COMPONENTS
 #)
 
 # Generate added messages and services with any dependencies listed here
-#generate_messages(
+# generate_messages(
 #  DEPENDENCIES
-# actionlib_msgs
+#  actionlib_msgs
 #  std_msgs  # Or other packages containing msgs
-#)
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -69,7 +70,7 @@ catkin_package(
 #  INCLUDE_DIRS include
 
   #  LIBRARIES basics
-#  CATKIN_DEPENDS rospy
+  CATKIN_DEPENDS rospy
 #  DEPENDS system_lib
 #  CATKIN_DEPENDS actionlib_msgs
 )
@@ -89,9 +90,6 @@ include_directories(
 ## Install ##
 #############
 
-install(PROGRAMS src/capstone_teleop_angle.py
-   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-install(PROGRAMS src/capstone_teleop_angle.py
+install(PROGRAMS src/test.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
