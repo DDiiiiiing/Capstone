@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>capstone_teleop_key</name>
+  <name>capstone</name>
   <version>0.0.0</version>
   <description>The capstone_teleop_key package</description>
 

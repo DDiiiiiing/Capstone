@@ -1,12 +1,9 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(capstone)
 
-
-
 find_package(catkin REQUIRED COMPONENTS
 # roscpp
   rospy
-  roslib
 #  message_generation
 # actionlib_msgs
   sensor_msgs
@@ -70,7 +67,7 @@ catkin_package(
 #  INCLUDE_DIRS include
 
   #  LIBRARIES basics
-  CATKIN_DEPENDS rospy
+#  CATKIN_DEPENDS rospy
 #  DEPENDS system_lib
 #  CATKIN_DEPENDS actionlib_msgs
 )
