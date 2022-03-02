@@ -5,7 +5,6 @@ from timeit import repeat
 import rospy
 import os
 import threading, time
-import roslib; roslib.load_manifest('teleop_twist_keyboard')
 import sys, select, termios, tty
 
 sys.dont_write_bytecode = True
@@ -24,8 +23,8 @@ Holonomic movement:
             u          l (roll ccw)
  (yaw)  h   j   k      ; (roll cw)
 
-1 : zero
-2 : home
+1 : home
+2 : ready
 anything else : stop
 
 CTRL-C to quit
@@ -42,18 +41,21 @@ l_moveBindings = {
 }
 a_moveBindings = {
 #             w p r      
-        'u':(0,0.1,0),
-        'h':(-0.1,0,0),
-        'j':(0,-0.1,0),
-        'k':(0.1,0,0),
-        'l':(0,0,-0.1),
-        ';':(0,0,0.1),
+        'u':(0,0.5,0),
+        'h':(-0.5,0,0),
+        'j':(0,-0.5,0),
+        'k':(0.5,0,0),
+        'l':(0,0,-0.5),
+        ';':(0,0,0.5),
 }
 
 # for single robot 
 ROBOT_ID     = "dsr01"         # Robot Model & Robot ID identify namespace 
 ROBOT_MODEL  = "m1509"      
 import DR_init
+DR_init.__dsr__id = ROBOT_ID
+DR_init.__dsr__model = ROBOT_MODEL
+from DSR_ROBOT import *
 
 jog_target = [0, 0, 0, 0, 0, 0]
 JOG_VELOCITY = 100
@@ -64,10 +66,6 @@ FLAG_MULTI_JOG_START = 2
 FLAG_JOG_STOP = 3
 
 FLAG_CONTROL = -1
-
-DR_init.__dsr__id = ROBOT_ID
-DR_init.__dsr__model = ROBOT_MODEL
-from DSR_ROBOT import *
 
 jog_multi = rospy.Publisher('/'+ROBOT_ID +ROBOT_MODEL+'/jog_multi', JogMultiAxis, queue_size=1) # Publish multi-jog topic
 
@@ -111,7 +109,7 @@ def thread_subscriber():
 def thread_publish_jog(): # Publish multi-jog 
     while not rospy.is_shutdown():
         if FLAG_CONTROL == FLAG_MULTI_JOG_START:
-           # if (jog_target) != pre_jog_target:
+            # if (jog_target) != pre_jog_target:
             jog_multi.publish(jog_target, MOVE_REFERENCE_BASE, JOG_VELOCITY)
         rospy.sleep(0.01)
 
@@ -128,7 +126,7 @@ def getKey(key_timeout):
 
 #### main
 if __name__=="__main__":
-    rospy.init_node('joy_test_py')
+    rospy.init_node('teleop_test_py')
     rospy.on_shutdown(shutdown)
     
     t1 = threading.Thread(target=thread_publish_jog)
@@ -168,9 +166,9 @@ if __name__=="__main__":
                 p = a_moveBindings[key][1]
                 r = a_moveBindings[key][2]
                 FLAG_CONTROL = FLAG_MULTI_JOG_START
-            elif key == '0':
-                FLAG_CONTROL = FLAG_HOMMING
             elif key == '1':
+                FLAG_CONTROL = FLAG_HOMMING
+            elif key == '2':
                 FLAG_CONTROL = FLAG_READY
 
                 if (rep == 14):
@@ -191,14 +189,14 @@ if __name__=="__main__":
                 r = 0
                 if (key == '\x03'):
                     break
-
+            
         except Exception as e:
             print(e)
 
         finally:
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
 
-        jog_target = []
+        jog_target = [x, y, z, r, p, w]
 
         #### check key input
         if FLAG_CONTROL == FLAG_HOMMING:
@@ -209,11 +207,13 @@ if __name__=="__main__":
             movej([0,0,90,0,90,0], 60, 30)      
             FLAG_CONTROL = -1      
         elif FLAG_CONTROL == FLAG_MULTI_JOG_START:
-            pass
+            print("-------------------------------")
+            print("command : ", end='')
+            print(jog_target)
+            print("-------------------------------")
+            
         elif FLAG_CONTROL == FLAG_JOG_STOP:
             jog_multi.publish([0,0,0,0,0,0], MOVE_REFERENCE_BASE, 0)        
             FLAG_CONTROL = -1
 
-
-        
     print('good bye!')
