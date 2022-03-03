@@ -28,9 +28,9 @@ ROS환경(Ubuntu 18.04, ROS melodic)에서 진행됨. 노드 구성은 로봇팔
 - Camera 2ea(for cctv)
 
 # Reference
-ROS Melodic. (http://wiki.ros.org/melodic/Installation/Ubuntu)
-DoosanRobotics Collaborative Robot. (https://github.com/doosan-robotics/doosan-robot)
-Robotis Turtlebot3. (https://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/)
-네이버 카페 오로카. (https://cafe.naver.com/openrt)
-Yolov3. (https://github.com/pjreddie/darknet)
+- ROS Melodic. (http://wiki.ros.org/melodic/Installation/Ubuntu)
+- DoosanRobotics Collaborative Robot. (https://github.com/doosan-robotics/doosan-robot)
+- Robotis Turtlebot3. (https://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/)
+- 네이버 카페 오로카. (https://cafe.naver.com/openrt)
+- Yolov3. (https://github.com/pjreddie/darknet)
 
